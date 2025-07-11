@@ -12,7 +12,16 @@ Route::get('/test', function () {
 });
 
 Route::get('/run-migrations', function () {
-    // ATTENTION : à supprimer après usage !
-    Artisan::call('migrate', ['--force' => true]);
-    return 'Migrations exécutées avec succès !';
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+        return response()->json([
+            'success' => true,
+            'output' => Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ], 500);
+    }
 });
