@@ -1,0 +1,253 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Task API",
+        "description": "API de gestion des tâches",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/tasks": {
+            "get": {
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Liste des tâches",
+                "operationId": "be68905d866e856db6c738172b8d929a",
+                "responses": {
+                    "200": {
+                        "description": "Succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Task"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Créer une tâche",
+                "operationId": "ebbaabc58e3db61374a57c53544959b2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Faire les courses"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Acheter du lait et du pain"
+                                    },
+                                    "is_done": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tâche créée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tasks/{id}": {
+            "get": {
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Afficher une tâche",
+                "operationId": "32c40e2d1129b80c1dcabd538df63a33",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la tâche",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tâche trouvée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tâche non trouvée"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Mettre à jour une tâche",
+                "operationId": "c36c959b634c99e1e02ad2f3f2c36a2c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la tâche",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Nouvelle tâche"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Description mise à jour"
+                                    },
+                                    "is_done": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tâche mise à jour",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tâche non trouvée"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Supprimer une tâche",
+                "operationId": "d81cc7975ea62176b4ef8f74ed95168d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la tâche",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tâche supprimée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tâche supprimée avec succès"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tâche non trouvée"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Task": {
+                "title": "Tâche",
+                "required": [
+                    "title"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Faire les courses"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Acheter du lait"
+                    },
+                    "is_done": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Tâches",
+            "description": "Endpoints liés aux tâches"
+        }
+    ]
+}
