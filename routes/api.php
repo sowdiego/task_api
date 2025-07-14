@@ -25,3 +25,10 @@ Route::get('/run-migrations', function () {
         ], 500);
     }
 });
+
+
+Route::get('/run-swagger-generate', function () {
+    Artisan::call('l5-swagger:generate');
+    return response()->json(['message' => 'Swagger doc générée']);
+});
+
