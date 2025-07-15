@@ -38,6 +38,49 @@ class TaskController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/tasks-paginated",
+     *     summary="Liste paginée des tâches",
+     *     tags={"Tâches"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Numéro de page",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Nombre d'éléments par page",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=10)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Liste paginée",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="current_page", type="integer", example=1),
+     *             @OA\Property(property="per_page", type="integer", example=10),
+     *             @OA\Property(property="total", type="integer", example=45),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/Task")
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function paginated(Request $request)
+    {
+        $perPage = $request->get('per_page', 10); // par défaut 10
+        $tasks = Task::paginate($perPage);
+        return response()->json($tasks);
+    }
+
+
+    /**
      * @OA\Post(
      *     path="/api/tasks",
      *     summary="Créer une tâche",

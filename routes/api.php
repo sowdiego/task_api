@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('tasks', TaskController::class);
 
+Route::get('/tasks-paginated', [TaskController::class, 'paginated']);
+
 Route::get('/test', function () {
     return response()->json(['message' => 'API OK']);
 });
